@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Flight reviews submit</string>
+    <string name="popup_title">How do you rate the overall flight experience?</string>
+    <string name="popup_content">LH 3495 26 mar 2019\nSFO -> CDG</string>
 </resources>
