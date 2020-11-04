@@ -2,4 +2,10 @@
     <string name="app_name">Flight reviews submit</string>
     <string name="popup_title">How do you rate the overall flight experience?</string>
     <string name="popup_content">LH 3495 26 mar 2019\nSFO -> CDG</string>
+
+    <string name="crowd">How crowded was the flight?</string>
+    <string name="aircraft">How do you rate the aircraft?</string>
+    <string name="seats">How do you rate the seats?</string>
+    <string name="crew">How do you rate the crew?</string>
+    <string name="food">How do you rate the food?</string>
 </resources>
