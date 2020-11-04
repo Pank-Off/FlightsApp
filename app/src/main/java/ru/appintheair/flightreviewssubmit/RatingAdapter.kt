@@ -12,8 +12,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         listOf(
             "How crowded was the flight?",
             "How do you rate the aircraft?",
-            "How do you rate the aircraft?",
-            "How do you rate the aircraft?",
+            "How do you rate the seats?",
+            "How do you rate the crew?",
             "How do you rate the food?"
         )
 
