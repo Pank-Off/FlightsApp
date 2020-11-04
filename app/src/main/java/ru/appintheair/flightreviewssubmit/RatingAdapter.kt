@@ -44,7 +44,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return data.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
 
         fun bind(text: String) {
@@ -52,7 +53,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class CrowdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CrowdViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
 
         fun bind(text: String) {

@@ -13,12 +13,12 @@
         android:layout_marginBottom="20dp"
         android:paddingTop="20dp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/ratingBar2"
+        app:layout_constraintBottom_toTopOf="@+id/rating_bar"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/popup_content" />
 
     <RatingBar
-        android:id="@+id/ratingBar2"
+        android:id="@+id/rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioButton
-        android:id="@+id/radioButton"
+        android:id="@+id/radio_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -34,11 +34,11 @@
         android:layout_marginTop="10dp"
         android:text="@string/leave_any_feedback"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/radioButton"
-        app:layout_constraintTop_toBottomOf="@+id/radioButton" />
+        app:layout_constraintStart_toStartOf="@+id/radio_button"
+        app:layout_constraintTop_toBottomOf="@+id/radio_button" />
 
     <EditText
-        android:id="@+id/textView4"
+        android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/share_your_experience_how_was_the_seat_how_was_the_food_any_tips"
@@ -64,6 +64,6 @@
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
