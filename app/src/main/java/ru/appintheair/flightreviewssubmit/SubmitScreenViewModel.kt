@@ -10,17 +10,9 @@ class SubmitScreenViewModel : ViewModel() {
 
     fun getRating(): LiveData<APIParameters> = mRating
 
-    fun setRating(listOfRating: HashMap<String, String?>) {
-        if (listOfRating.containsKey("text")) {
-            apiParameters.setTextComment(listOfRating["text"])
-        }
-        if (listOfRating.containsKey("flight")) {
-            apiParameters.setFlightRating(listOfRating["flight"])
-        }
-        if (listOfRating.containsKey("food")) {
-            apiParameters.setFoodRating(listOfRating["food"])
-        }
 
+    fun setRating(listOfRating: HashMap<String, String?>) {
+        apiParameters.setData(listOfRating)
         mRating.value = apiParameters
     }
 }

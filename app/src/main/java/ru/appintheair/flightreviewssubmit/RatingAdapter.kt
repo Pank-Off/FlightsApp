@@ -44,8 +44,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> holder.bind(data[position])
-            is CrowdViewHolder -> holder.bind(data[position])
+            is ViewHolder -> holder.bind(data[position], position)
+            is CrowdViewHolder -> holder.bind(data[position], position)
         }
     }
 
@@ -59,10 +59,10 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
 
-        fun bind(text: String) {
+        fun bind(text: String, position: Int) {
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.toString())
+                listener?.onClick(rating.toString(), position)
             }
         }
     }
@@ -72,12 +72,11 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
-        fun bind(text: String) {
+        fun bind(text: String, position: Int) {
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.roundToInt().toString())
+                listener?.onClick(rating.roundToInt().toString(), position)
             }
         }
     }
-
 }

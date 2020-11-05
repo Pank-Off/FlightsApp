@@ -46,7 +46,7 @@ class SubmitScreen : Fragment() {
         setOnRatingBarChangeListener()
 
         mSubmitScreenViewModel?.getRating()?.observe(viewLifecycleOwner, { data ->
-            Toast.makeText(context, data.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
     }
 
@@ -60,7 +60,6 @@ class SubmitScreen : Fragment() {
     private fun setOnRadioButtonClickListener() {
         mRadioButton.setOnClickListener {
             if (mRadioButton.isSelected) {
-                mListOfRating["food"] = "NotNull"
                 mRadioButton.isSelected = false
                 mRadioButton.isChecked = false
             } else {
@@ -82,9 +81,19 @@ class SubmitScreen : Fragment() {
         mRecyclerView = view.findViewById(R.id.rating_list)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRatingAdapter.attachListener(object : OnItemClickListener {
-            override fun onClick(rating: String) {
-                Toast.makeText(context, rating, Toast.LENGTH_SHORT).show()
+            override fun onClick(rating: String, position: Int) {
+                when (position) {
+                    0 -> mListOfRating["crowd"] = rating
+                    1 -> mListOfRating["aircraft"] = rating
+                    2 -> mListOfRating["seats"] = rating
+                    3 -> mListOfRating["crew"] = rating
+                    4 -> {
+                        mRadioButton.isSelected = false
+                        mRadioButton.isChecked = false
+                        mListOfRating["food"] = rating
+                    }
 
+                }
             }
         })
         mRecyclerView.adapter = mRatingAdapter
