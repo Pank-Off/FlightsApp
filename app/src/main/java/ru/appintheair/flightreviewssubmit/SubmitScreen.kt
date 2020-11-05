@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RatingBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +23,7 @@ class SubmitScreen : Fragment() {
     private lateinit var mRadioButton: RadioButton
     private lateinit var mEditTextComment: EditText
     private val mRatingAdapter = RatingAdapter()
-    private var mListOfRating = HashMap<String, String?>()
+    private var mMapOfRating = HashMap<String, String?>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,18 +37,20 @@ class SubmitScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mSubmitScreenViewModel =
             activity?.let { ViewModelProvider(it) }?.get(SubmitScreenViewModel::class.java)
-        initRecyclerView(view)
         initViews(view)
+        initRecyclerView()
 
         mSubmitBtn.setOnClickListener {
-            mListOfRating["text"] = mEditTextComment.text.toString()
-            mSubmitScreenViewModel?.setRating(mListOfRating)
+            mMapOfRating["text"] = mEditTextComment.text.toString()
+            mSubmitScreenViewModel?.setRating(mMapOfRating)
         }
 
         setOnRadioButtonClickListener()
         setOnRatingBarChangeListener()
 
         mSubmitScreenViewModel?.getRating()?.observe(viewLifecycleOwner, { data ->
+            mRatingAdapter.refreshRating(data)
+            mMapOfRating = data.getAPIMap()
             Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
     }
@@ -53,7 +58,7 @@ class SubmitScreen : Fragment() {
     private fun setOnRatingBarChangeListener() {
         mFlightRatingBar.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                mListOfRating["flight"] = rating.toString()
+                mMapOfRating["flight"] = rating.toString()
             }
     }
 
@@ -63,7 +68,7 @@ class SubmitScreen : Fragment() {
                 mRadioButton.isSelected = false
                 mRadioButton.isChecked = false
             } else {
-                mListOfRating["food"] = null
+                mMapOfRating["food"] = null
                 mRadioButton.isSelected = true
                 mRadioButton.isChecked = true
             }
@@ -71,32 +76,38 @@ class SubmitScreen : Fragment() {
     }
 
     private fun initViews(view: View) {
+        mRecyclerView = view.findViewById(R.id.rating_list)
         mSubmitBtn = view.findViewById(R.id.submitButton)
         mFlightRatingBar = view.findViewById(R.id.flight_rating_bar)
         mRadioButton = view.findViewById(R.id.radio_button)
         mEditTextComment = view.findViewById(R.id.comment)
     }
 
-    private fun initRecyclerView(view: View) {
-        mRecyclerView = view.findViewById(R.id.rating_list)
+    private fun initRecyclerView() {
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRatingAdapter.attachListener(object : OnItemClickListener {
             override fun onClick(rating: String, position: Int) {
                 when (position) {
-                    0 -> mListOfRating["crowd"] = rating
-                    1 -> mListOfRating["aircraft"] = rating
-                    2 -> mListOfRating["seats"] = rating
-                    3 -> mListOfRating["crew"] = rating
+                    0 -> {
+                        mMapOfRating["crowd"] = rating
+                    }
+                    1 -> {
+                        mMapOfRating["aircraft"] = rating
+                    }
+                    2 -> {
+                        mMapOfRating["seats"] = rating
+                    }
+                    3 -> {
+                        mMapOfRating["crew"] = rating
+                    }
                     4 -> {
                         mRadioButton.isSelected = false
                         mRadioButton.isChecked = false
-                        mListOfRating["food"] = rating
+                        mMapOfRating["food"] = rating
                     }
-
                 }
             }
         })
         mRecyclerView.adapter = mRatingAdapter
-
     }
 }

@@ -8,8 +8,11 @@ class SubmitScreenViewModel : ViewModel() {
     private val mRating: MutableLiveData<APIParameters> = MutableLiveData()
     private val apiParameters: APIParameters = APIParameters()
 
-    fun getRating(): LiveData<APIParameters> = mRating
+    init {
+        mRating.value = apiParameters
+    }
 
+    fun getRating(): LiveData<APIParameters> = mRating
 
     fun setRating(listOfRating: HashMap<String, String?>) {
         apiParameters.setData(listOfRating)

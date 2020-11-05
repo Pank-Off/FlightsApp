@@ -5,10 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Math.round
 import kotlin.math.roundToInt
 
 class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,6 +18,14 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             "How do you rate the crew?",
             "How do you rate the food?"
         )
+
+    private var mRatingList: HashMap<String, Float> = HashMap()
+
+    fun refreshRating(ratingList: APIParameters) {
+        mRatingList = ratingList.getRating()
+        notifyDataSetChanged()
+    }
+
     private var listener: OnItemClickListener? = null
     fun attachListener(onItemClickListener: OnItemClickListener) {
         listener = onItemClickListener
@@ -44,8 +49,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> holder.bind(data[position], position)
-            is CrowdViewHolder -> holder.bind(data[position], position)
+            is ViewHolder -> holder.bind(data[position], position, mRatingList)
+            is CrowdViewHolder -> holder.bind(data[position], position, mRatingList)
         }
     }
 
@@ -58,8 +63,16 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
-
-        fun bind(text: String, position: Int) {
+        fun bind(text: String, position: Int, ratingList: HashMap<String, Float>) {
+            if (text.endsWith("aircraft?")) {
+                ratingBar.rating = ratingList["aircraft"] ?: 0f
+            } else if (text.endsWith("seats?")) {
+                ratingBar.rating = ratingList["seats"] ?: 0f
+            } else if (text.endsWith("crew?")) {
+                ratingBar.rating = ratingList["crew"] ?: 0f
+            } else if (text.endsWith("food?")) {
+                ratingBar.rating = ratingList["food"] ?: 0f
+            }
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
                 listener?.onClick(rating.toString(), position)
@@ -72,7 +85,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
-        fun bind(text: String, position: Int) {
+        fun bind(text: String, position: Int, ratingList: HashMap<String, Float>) {
+            ratingBar.rating = ratingList["crowd"] ?: 0f
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
                 listener?.onClick(rating.roundToInt().toString(), position)
