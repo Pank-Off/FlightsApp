@@ -81,6 +81,13 @@ class SubmitScreen : Fragment() {
     private fun initRecyclerView(view: View) {
         mRecyclerView = view.findViewById(R.id.rating_list)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mRatingAdapter.attachListener(object : OnItemClickListener {
+            override fun onClick(rating: String) {
+                Toast.makeText(context, rating, Toast.LENGTH_SHORT).show()
+
+            }
+        })
         mRecyclerView.adapter = mRatingAdapter
+
     }
 }
