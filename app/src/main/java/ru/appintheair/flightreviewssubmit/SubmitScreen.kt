@@ -1,5 +1,6 @@
 package ru.appintheair.flightreviewssubmit
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,9 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +26,7 @@ class SubmitScreen : Fragment() {
     private lateinit var mFlightRatingBar: RatingBar
     private lateinit var mRadioButton: RadioButton
     private lateinit var mEditTextComment: EditText
+    private lateinit var customToolbar: Toolbar
     private val mRatingAdapter = RatingAdapter()
     private var mMapOfRating = HashMap<String, String?>()
 
@@ -39,7 +44,7 @@ class SubmitScreen : Fragment() {
             activity?.let { ViewModelProvider(it) }?.get(SubmitScreenViewModel::class.java)
         initViews(view)
         initRecyclerView()
-
+        initToolbar()
         mSubmitBtn.setOnClickListener {
             mMapOfRating["text"] = mEditTextComment.text.toString()
             mSubmitScreenViewModel?.setRating(mMapOfRating)
@@ -53,6 +58,20 @@ class SubmitScreen : Fragment() {
             mMapOfRating = data.getAPIMap()
             Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
+    }
+
+    private fun initToolbar() {
+        val xIcon: Drawable? =
+            context?.let { ContextCompat.getDrawable(it, R.drawable.ic_letter_x) }
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(customToolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
+            setHomeAsUpIndicator(xIcon)
+            setDisplayHomeAsUpEnabled(true)
+        }
+        customToolbar.setNavigationOnClickListener {
+            Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setOnRatingBarChangeListener() {
@@ -81,6 +100,9 @@ class SubmitScreen : Fragment() {
         mFlightRatingBar = view.findViewById(R.id.flight_rating_bar)
         mRadioButton = view.findViewById(R.id.radio_button)
         mEditTextComment = view.findViewById(R.id.comment)
+        customToolbar = view.findViewById(R.id.toolbar)
+
+
     }
 
     private fun initRecyclerView() {
@@ -110,4 +132,5 @@ class SubmitScreen : Fragment() {
         })
         mRecyclerView.adapter = mRatingAdapter
     }
+
 }
