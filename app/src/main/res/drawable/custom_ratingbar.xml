@@ -3,11 +3,11 @@
 
     <item
         android:id="@android:id/background"
-        android:drawable="@drawable/heartback" />
+        android:drawable="@drawable/person_icon" />
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/heart" />
+        android:drawable="@drawable/person_activited_icon" />
     <item
         android:id="@android:id/progress"
-        android:drawable="@drawable/heart" />
+        android:drawable="@drawable/person_activited_icon" />
 </layer-list>

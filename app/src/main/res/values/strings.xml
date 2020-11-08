@@ -3,13 +3,20 @@
     <string name="popup_title">How do you rate the overall flight experience?</string>
     <string name="popup_content">LH 3495 26 mar 2019\nSFO -> CDG</string>
 
-    <string name="crowd">How crowded was the flight?</string>
-    <string name="aircraft">How do you rate the aircraft?</string>
-    <string name="seats">How do you rate the seats?</string>
-    <string name="crew">How do you rate the crew?</string>
-    <string name="food">How do you rate the food?</string>
     <string name="there_were_no_food">There were no food</string>
     <string name="leave_any_feedback">Leave any feedback</string>
     <string name="share_your_experience_how_was_the_seat_how_was_the_food_any_tips">Share your experience. How was the seat? How was the food? Any tips?</string>
     <string name="submit">Submit</string>
+
+    <string name="text">text</string>
+    <string name="food">food</string>
+    <string name="flight">flight</string>
+    <string name="crew">crew</string>
+    <string name="aircraft">aircraft</string>
+    <string name="seat">seat</string>
+    <string name="people">people</string>
+
+    <string name="close">Close</string>
+
+
 </resources>
