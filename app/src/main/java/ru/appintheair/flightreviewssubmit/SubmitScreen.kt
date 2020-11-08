@@ -56,6 +56,9 @@ class SubmitScreen : Fragment() {
         mSubmitScreenViewModel?.getRating()?.observe(viewLifecycleOwner, { data ->
             mRatingAdapter.refreshRating(data)
             mMapOfRating = data.getAPIMap()
+        })
+
+        mSubmitScreenViewModel?.getData()?.observe(viewLifecycleOwner, { data ->
             Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
     }
@@ -77,7 +80,7 @@ class SubmitScreen : Fragment() {
     private fun setOnRatingBarChangeListener() {
         mFlightRatingBar.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                mMapOfRating["flight"] = rating.toString()
+                mMapOfRating["flight"] = rating.toInt().toString()
             }
     }
 
@@ -111,13 +114,13 @@ class SubmitScreen : Fragment() {
             override fun onClick(rating: String, position: Int) {
                 when (position) {
                     0 -> {
-                        mMapOfRating["crowd"] = rating
+                        mMapOfRating["people"] = rating
                     }
                     1 -> {
                         mMapOfRating["aircraft"] = rating
                     }
                     2 -> {
-                        mMapOfRating["seats"] = rating
+                        mMapOfRating["seat"] = rating
                     }
                     3 -> {
                         mMapOfRating["crew"] = rating

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.math.roundToInt
 
 class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -21,7 +20,7 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mRatingList: HashMap<String, Float> = HashMap()
 
-    fun refreshRating(ratingList: APIParameters) {
+    fun refreshRating(ratingList: RatingClass) {
         mRatingList = ratingList.getRating()
         notifyDataSetChanged()
     }
@@ -67,7 +66,7 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (text.endsWith("aircraft?")) {
                 ratingBar.rating = ratingList["aircraft"] ?: 0f
             } else if (text.endsWith("seats?")) {
-                ratingBar.rating = ratingList["seats"] ?: 0f
+                ratingBar.rating = ratingList["seat"] ?: 0f
             } else if (text.endsWith("crew?")) {
                 ratingBar.rating = ratingList["crew"] ?: 0f
             } else if (text.endsWith("food?")) {
@@ -75,7 +74,7 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.toString(), position)
+                listener?.onClick(rating.toInt().toString(), position)
             }
         }
     }
@@ -86,10 +85,10 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
         fun bind(text: String, position: Int, ratingList: HashMap<String, Float>) {
-            ratingBar.rating = ratingList["crowd"] ?: 0f
+            ratingBar.rating = ratingList["people"] ?: 0f
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.roundToInt().toString(), position)
+                listener?.onClick(rating.toInt().toString(), position)
             }
         }
     }

@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingBottom="30dp"
+        android:stepSize="1"
         android:theme="@style/RatingBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
