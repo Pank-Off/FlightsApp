@@ -3,6 +3,7 @@ package ru.appintheair.flightreviewssubmit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
     private val mRating: MutableLiveData<RatingClass> = MutableLiveData()
@@ -22,15 +23,15 @@ class SubmitScreenViewModel : ViewModel() {
         listOfRating.forEach { (key, _) ->
             when (key) {
                 "aircraft" -> apiParameters.aircraft =
-                    listOfRating[key]?.toInt()?.plus(1)
+                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
                 "flight" -> apiParameters.flight =
-                    listOfRating[key]?.toInt()?.plus(1)
-                "food" -> apiParameters.food = listOfRating[key]?.toInt()?.plus(1)
+                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                "food" -> apiParameters.food = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
                 "people" -> apiParameters.people =
-                    listOfRating[key]?.toInt()?.plus(1)
+                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
                 "text" -> apiParameters.text = listOfRating[key]
-                "crew" -> apiParameters.crew = listOfRating[key]?.toInt()?.plus(1)
-                "seat" -> apiParameters.seat = listOfRating[key]?.toInt()?.plus(1)
+                "crew" -> apiParameters.crew = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                "seat" -> apiParameters.seat = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
             }
         }
         mAPIParameters.value = apiParameters

@@ -74,7 +74,7 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.toInt().toString(), position)
+                listener?.onClick(rating.toString(), position)
             }
         }
     }
@@ -88,7 +88,7 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ratingBar.rating = ratingList["people"] ?: 0f
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                listener?.onClick(rating.toInt().toString(), position)
+                listener?.onClick(rating.toString(), position)
             }
         }
     }
