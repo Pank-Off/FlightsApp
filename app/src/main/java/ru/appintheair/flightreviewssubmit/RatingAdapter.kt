@@ -18,10 +18,10 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             "How do you rate the food?"
         )
 
-    private var mRatingList: HashMap<String, Float> = HashMap()
+    private var mRatingList: HashMap<String, String?> = HashMap()
 
-    fun refreshRating(ratingList: RatingClass) {
-        mRatingList = ratingList.getRating()
+    fun refreshRating(ratingList: HashMap<String, String?>) {
+        mRatingList = ratingList
         notifyDataSetChanged()
     }
 
@@ -62,15 +62,15 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
-        fun bind(text: String, position: Int, ratingList: HashMap<String, Float>) {
+        fun bind(text: String, position: Int, ratingList: HashMap<String, String?>) {
             if (text.endsWith("aircraft?")) {
-                ratingBar.rating = ratingList["aircraft"] ?: 0f
+                ratingBar.rating = ratingList["aircraft"]?.toFloat() ?: 0f
             } else if (text.endsWith("seats?")) {
-                ratingBar.rating = ratingList["seat"] ?: 0f
+                ratingBar.rating = ratingList["seat"]?.toFloat() ?: 0f
             } else if (text.endsWith("crew?")) {
-                ratingBar.rating = ratingList["crew"] ?: 0f
+                ratingBar.rating = ratingList["crew"]?.toFloat() ?: 0f
             } else if (text.endsWith("food?")) {
-                ratingBar.rating = ratingList["food"] ?: 0f
+                ratingBar.rating = ratingList["food"]?.toFloat() ?: 0f
             }
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
@@ -84,8 +84,8 @@ class RatingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val textView: TextView = itemView.findViewById(R.id.rating_text)
         private val ratingBar: RatingBar = itemView.findViewById(R.id.rating_bar)
         private val listener = onItemClickListener
-        fun bind(text: String, position: Int, ratingList: HashMap<String, Float>) {
-            ratingBar.rating = ratingList["people"] ?: 0f
+        fun bind(text: String, position: Int, ratingList: HashMap<String, String?>) {
+            ratingBar.rating = ratingList["people"]?.toFloat() ?: 0f
             textView.text = text
             ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
                 listener?.onClick(rating.toString(), position)

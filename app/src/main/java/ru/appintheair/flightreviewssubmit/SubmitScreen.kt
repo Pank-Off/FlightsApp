@@ -60,7 +60,7 @@ class SubmitScreen : Fragment() {
 
         mSubmitScreenViewModel?.getRating()?.observe(viewLifecycleOwner, { data ->
             mRatingAdapter.refreshRating(data)
-            mMapOfRating = data.getAPIMap()
+            mMapOfRating = data
         })
 
         mSubmitScreenViewModel?.getData()?.observe(viewLifecycleOwner, { data ->

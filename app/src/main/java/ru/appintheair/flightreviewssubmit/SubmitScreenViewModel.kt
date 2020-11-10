@@ -8,15 +8,15 @@ import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
-    private val mRating: MutableLiveData<RatingClass> = MutableLiveData()
-    private val ratingClass: RatingClass = RatingClass()
+    private val mRating: MutableLiveData<HashMap<String, String?>> = MutableLiveData()
+    private val ratingMap: HashMap<String, String?> = LinkedHashMap()
     private val mAPIParameters: MutableLiveData<APIParameters> = MutableLiveData()
 
     init {
-        mRating.value = ratingClass
+        mRating.value = ratingMap
     }
 
-    fun getRating(): LiveData<RatingClass> = mRating
+    fun getRating(): LiveData<HashMap<String, String?>> = mRating
 
     fun getData(): LiveData<APIParameters> = mAPIParameters
 
