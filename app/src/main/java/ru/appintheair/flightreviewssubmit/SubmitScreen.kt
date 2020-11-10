@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SubmitScreen : Fragment() {
     private var mSubmitScreenViewModel: SubmitScreenViewModel? = null
@@ -24,6 +27,7 @@ class SubmitScreen : Fragment() {
     private lateinit var mRadioButton: RadioButton
     private lateinit var mEditTextComment: EditText
     private lateinit var customToolbar: Toolbar
+    private lateinit var mProgressBar: ProgressBar
     private val mRatingAdapter = RatingAdapter()
     private var mMapOfRating = HashMap<String, String?>()
 
@@ -43,8 +47,12 @@ class SubmitScreen : Fragment() {
         initRecyclerView()
         initToolbar()
         mSubmitBtn.setOnClickListener {
+            mProgressBar.visibility = ProgressBar.VISIBLE
+            mSubmitBtn.isEnabled = false
             mMapOfRating["text"] = mEditTextComment.text.toString()
-            mSubmitScreenViewModel?.setRating(mMapOfRating)
+            GlobalScope.launch(Dispatchers.IO) {
+                mSubmitScreenViewModel?.setRating(mMapOfRating)
+            }
         }
 
         setOnRadioButtonClickListener()
@@ -56,6 +64,8 @@ class SubmitScreen : Fragment() {
         })
 
         mSubmitScreenViewModel?.getData()?.observe(viewLifecycleOwner, { data ->
+            mProgressBar.visibility = ProgressBar.INVISIBLE
+            mSubmitBtn.isEnabled = true
             Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
     }
@@ -101,6 +111,7 @@ class SubmitScreen : Fragment() {
         mRadioButton = view.findViewById(R.id.radio_button)
         mEditTextComment = view.findViewById(R.id.comment)
         customToolbar = view.findViewById(R.id.toolbar)
+        mProgressBar = view.findViewById(R.id.loading_progress_bar)
 
     }
 

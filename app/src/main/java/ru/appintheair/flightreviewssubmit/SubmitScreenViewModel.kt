@@ -1,8 +1,10 @@
 package ru.appintheair.flightreviewssubmit
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
@@ -20,6 +22,10 @@ class SubmitScreenViewModel : ViewModel() {
 
     fun setRating(listOfRating: HashMap<String, String?>) {
         val apiParameters = APIParameters(null, 1, 1, 1, 1, 1, 1)
+        runBlocking {
+            Log.d(javaClass.simpleName, "Imitate long operation")
+            delay(3000)
+        }
         listOfRating.forEach { (key, _) ->
             when (key) {
                 "aircraft" -> apiParameters.aircraft =
@@ -34,6 +40,8 @@ class SubmitScreenViewModel : ViewModel() {
                 "seat" -> apiParameters.seat = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
             }
         }
-        mAPIParameters.value = apiParameters
+        GlobalScope.launch(Dispatchers.Main) {
+            mAPIParameters.value = apiParameters
+        }
     }
 }
