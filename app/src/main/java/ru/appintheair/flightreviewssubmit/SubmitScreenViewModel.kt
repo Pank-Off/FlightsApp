@@ -5,6 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.aircraft
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.crew
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.flight
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.food
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.people
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.seat
+import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.text
 import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
@@ -28,16 +35,16 @@ class SubmitScreenViewModel : ViewModel() {
         }
         listOfRating.forEach { (key, _) ->
             when (key) {
-                "aircraft" -> apiParameters.aircraft =
+                aircraft -> apiParameters.aircraft =
                     listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                "flight" -> apiParameters.flight =
+                flight -> apiParameters.flight =
                     listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                "food" -> apiParameters.food = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                "people" -> apiParameters.people =
+                food -> apiParameters.food = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                people -> apiParameters.people =
                     listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                "text" -> apiParameters.text = listOfRating[key]
-                "crew" -> apiParameters.crew = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                "seat" -> apiParameters.seat = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                text -> apiParameters.text = listOfRating[key]
+                crew -> apiParameters.crew = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                seat -> apiParameters.seat = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
             }
         }
         GlobalScope.launch(Dispatchers.Main) {

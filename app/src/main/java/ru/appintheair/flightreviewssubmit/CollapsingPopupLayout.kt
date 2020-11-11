@@ -60,7 +60,7 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
     }
 
     companion object {
-        val TAG = "CollapsingImageLayout"
+        const val TAG = "CollapsingImageLayout"
         private fun getViewOffsetHelper(view: View): ViewOffsetHelper {
             var offsetHelper = view.getTag(R.id.view_offset_helper) as ViewOffsetHelper?
             if (offsetHelper == null) {
