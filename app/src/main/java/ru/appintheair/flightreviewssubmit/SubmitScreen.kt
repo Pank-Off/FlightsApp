@@ -78,6 +78,7 @@ class SubmitScreen : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
             setHomeAsUpIndicator(xIcon)
             setDisplayHomeAsUpEnabled(true)
+            title = ""
         }
         customToolbar.setNavigationOnClickListener {
             Toast.makeText(context, "Close", Toast.LENGTH_SHORT).show()
