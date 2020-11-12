@@ -52,7 +52,7 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
             val child: View = getChildAt(0)
             val offsetHelper = getViewOffsetHelper(child)
             val scaleFactor = 100f - offsetFactor * 150f
-            child.findViewById<View>(R.id.avatar).y = scaleFactor + 100
+            child.findViewById<View>(R.id.avatar).y = scaleFactor + 120
             val topOffset =
                 ((mImageTopCollapsed - mImageTopExpanded) * offsetFactor).toInt() - verticalOffset
             offsetHelper.setTopAndBottomOffset(topOffset)
