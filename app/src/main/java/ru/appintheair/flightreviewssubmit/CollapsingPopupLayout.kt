@@ -43,7 +43,6 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
         getViewOffsetHelper(child).onViewLayout()
     }
 
-
     inner class OnOffsetChangedListener : AppBarLayout.OnOffsetChangedListener {
         override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
             val scrollRange = appBarLayout.totalScrollRange
@@ -51,8 +50,9 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
             Log.d(TAG, "onOffsetChanged(), offsetFactor = $offsetFactor")
             val child: View = getChildAt(0)
             val offsetHelper = getViewOffsetHelper(child)
-            val scaleFactor = 100f - offsetFactor * 150f
-            child.findViewById<View>(R.id.avatar).y = scaleFactor + 120
+            val scaleFactor = 100 - offsetFactor * resources.getDimension(R.dimen.offsetFactor)
+            child.findViewById<View>(R.id.avatar).y =
+                scaleFactor + resources.getDimension(R.dimen.avatar_coordinate) - 90
             val topOffset =
                 ((mImageTopCollapsed - mImageTopExpanded) * offsetFactor).toInt() - verticalOffset
             offsetHelper.setTopAndBottomOffset(topOffset)
@@ -60,7 +60,7 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
     }
 
     companion object {
-        const val TAG = "CollapsingImageLayout"
+        const val TAG = "CollapsingPopupLayout"
         private fun getViewOffsetHelper(view: View): ViewOffsetHelper {
             var offsetHelper = view.getTag(R.id.view_offset_helper) as ViewOffsetHelper?
             if (offsetHelper == null) {

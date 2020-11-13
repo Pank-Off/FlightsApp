@@ -16,9 +16,9 @@
         <ru.appintheair.flightreviewssubmit.CollapsingPopupLayout
             android:id="@+id/toolbarLayout"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="@dimen/collapsingPopupLay_height"
             android:fitsSystemWindows="true"
-            android:minHeight="108dp"
+            android:minHeight="@dimen/collapsingPopupLay_minHeight"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <include layout="@layout/popup_layout" />

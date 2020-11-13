@@ -6,8 +6,8 @@
         android:drawable="@drawable/person_icon" />
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/person_activited_icon" />
+        android:drawable="@drawable/person_activated_icon" />
     <item
         android:id="@android:id/progress"
-        android:drawable="@drawable/person_activited_icon" />
+        android:drawable="@drawable/person_activated_icon" />
 </layer-list>
