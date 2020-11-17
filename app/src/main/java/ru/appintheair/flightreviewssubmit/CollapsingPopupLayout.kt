@@ -50,9 +50,32 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
             Log.d(TAG, "onOffsetChanged(), offsetFactor = $offsetFactor")
             val child: View = getChildAt(0)
             val offsetHelper = getViewOffsetHelper(child)
-            val scaleFactor = 100 - offsetFactor * resources.getDimension(R.dimen.offsetFactor)
-            child.findViewById<View>(R.id.avatar).y =
-                scaleFactor + resources.getDimension(R.dimen.avatar_coordinate) - 90
+            val scaleFactor = -offsetFactor * resources.getDimension(R.dimen.offsetFactor)
+            val avatarView = child.findViewById<View>(R.id.avatar)
+            val title = child.findViewById<View>(R.id.title)
+            val subtitle = child.findViewById<View>(R.id.subtitle)
+            val ratingBar = child.findViewById<View>(R.id.flight_rating_bar)
+            val popupLayoutContainer = child.findViewById<View>(R.id.popup_container)
+            val toolbar = child.findViewById<View>(R.id.toolbar)
+
+            popupLayoutContainer.y = -30f
+
+            title.alpha = -offsetFactor + 1
+            subtitle.alpha = -offsetFactor + 1
+            ratingBar.alpha = -offsetFactor + 1
+            if (isEnabledRatingBar) {
+                ratingBar.isEnabled = ratingBar.alpha != 0f
+            }
+            avatarView.y =
+                -scaleFactor + resources.getDimension(R.dimen.avatar_coordinate) - resources.getDimension(
+                    R.dimen.scaleFactorAvatarDimen
+                ) + offsetFactor * resources.getDimension(R.dimen.avatar_multiply_factor)
+            toolbar.y =
+                -scaleFactor + resources.getDimension(R.dimen.toolbar_coordinate) - resources.getDimension(
+                    R.dimen.scaleFactorToolbarDimen
+                ) + offsetFactor * resources.getDimension(
+                    R.dimen.toolbar_multiply_factor
+                )
             val topOffset =
                 ((mImageTopCollapsed - mImageTopExpanded) * offsetFactor).toInt() - verticalOffset
             offsetHelper.setTopAndBottomOffset(topOffset)
@@ -61,6 +84,7 @@ class CollapsingPopupLayout(context: Context, attrs: AttributeSet?, defStyleAttr
 
     companion object {
         const val TAG = "CollapsingPopupLayout"
+        var isEnabledRatingBar = true
         private fun getViewOffsetHelper(view: View): ViewOffsetHelper {
             var offsetHelper = view.getTag(R.id.view_offset_helper) as ViewOffsetHelper?
             if (offsetHelper == null) {

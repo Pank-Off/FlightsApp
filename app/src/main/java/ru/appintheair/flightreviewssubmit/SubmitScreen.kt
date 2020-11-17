@@ -18,28 +18,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class SubmitScreen : Fragment() {
     private var mSubmitScreenViewModel: SubmitScreenViewModel? = null
 
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mSubmitBtn: MaterialButton
-    private lateinit var mFlightRatingBar: RatingBar
-    private lateinit var mRadioButton: RadioButton
-    private lateinit var mEditTextComment: EditText
-    private lateinit var customToolbar: Toolbar
-    private lateinit var mProgressBar: ProgressBar
+    private var mRecyclerView: RecyclerView? = null
+    private var mSubmitBtn: MaterialButton? = null
+    private var mFlightRatingBar: RatingBar? = null
+    private var mRadioButton: RadioButton? = null
+    private var mEditTextComment: EditText? = null
+    private var customToolbar: Toolbar? = null
+    private var mProgressBar: ProgressBar? = null
     private val mRatingAdapter = RatingAdapter()
-    private var mMapOfRating = HashMap<String, String?>()
-
-    companion object {
-        lateinit var flight: String
-        lateinit var food: String
-        lateinit var people: String
-        lateinit var aircraft: String
-        lateinit var seat: String
-        lateinit var crew: String
-        lateinit var text: String
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,15 +44,12 @@ class SubmitScreen : Fragment() {
         mSubmitScreenViewModel =
             activity?.let { ViewModelProvider(it) }?.get(SubmitScreenViewModel::class.java)
         initViews(view)
-        initResources()
         initRecyclerView()
         initToolbar()
-        mSubmitBtn.setOnClickListener {
-            mProgressBar.visibility = ProgressBar.VISIBLE
-            mSubmitBtn.isEnabled = false
-            mMapOfRating[text] = mEditTextComment.text.toString()
+        mSubmitBtn?.setOnClickListener {
+            mSubmitScreenViewModel?.refreshMap(MyCell.TEXT, mEditTextComment?.text.toString())
             GlobalScope.launch(Dispatchers.IO) {
-                mSubmitScreenViewModel?.setRating(mMapOfRating)
+                mSubmitScreenViewModel?.setRating()
             }
         }
 
@@ -71,14 +58,32 @@ class SubmitScreen : Fragment() {
 
         mSubmitScreenViewModel?.getRating()?.observe(viewLifecycleOwner, { data ->
             mRatingAdapter.refreshRating(data)
-            mMapOfRating = data
         })
 
         mSubmitScreenViewModel?.getData()?.observe(viewLifecycleOwner, { data ->
-            mProgressBar.visibility = ProgressBar.INVISIBLE
-            mSubmitBtn.isEnabled = true
             Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
         })
+
+        mSubmitScreenViewModel?.getProgressBarState()?.observe(viewLifecycleOwner) { progress ->
+            when (progress) {
+                SubmitScreenViewModel.ProgressBarState.VISIBLE -> {
+                    mProgressBar?.visibility = ProgressBar.VISIBLE
+                    mSubmitBtn?.visibility = MaterialButton.INVISIBLE
+                    CollapsingPopupLayout.isEnabledRatingBar = false
+                    mRadioButton?.isEnabled = false
+                    mEditTextComment?.isEnabled = false
+                    mRatingAdapter.setEnabled(false)
+                }
+                SubmitScreenViewModel.ProgressBarState.INVISIBLE -> {
+                    mProgressBar?.visibility = ProgressBar.INVISIBLE
+                    mSubmitBtn?.visibility = MaterialButton.VISIBLE
+                    CollapsingPopupLayout.isEnabledRatingBar = true
+                    mRadioButton?.isEnabled = true
+                    mEditTextComment?.isEnabled = true
+                    mRatingAdapter.setEnabled(true)
+                }
+            }
+        }
     }
 
     private fun initViews(view: View) {
@@ -89,45 +94,20 @@ class SubmitScreen : Fragment() {
         mEditTextComment = view.findViewById(R.id.comment)
         customToolbar = view.findViewById(R.id.toolbar)
         mProgressBar = view.findViewById(R.id.loading_progress_bar)
-
-    }
-
-    private fun initResources() {
-        flight = resources.getString(R.string.flight)
-        food = resources.getString(R.string.food)
-        people = resources.getString(R.string.people)
-        aircraft = resources.getString(R.string.aircraft)
-        seat = resources.getString(R.string.seat)
-        crew = resources.getString(R.string.crew)
-        text = resources.getString(R.string.text)
     }
 
     private fun initRecyclerView() {
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mRecyclerView?.layoutManager = LinearLayoutManager(context)
         mRatingAdapter.attachListener(object : OnItemClickListener {
-            override fun onClick(rating: String, position: Int) {
-                when (position) {
-                    0 -> {
-                        mMapOfRating[people] = rating
-                    }
-                    1 -> {
-                        mMapOfRating[aircraft] = rating
-                    }
-                    2 -> {
-                        mMapOfRating[seat] = rating
-                    }
-                    3 -> {
-                        mMapOfRating[crew] = rating
-                    }
-                    4 -> {
-                        mRadioButton.isSelected = false
-                        mRadioButton.isChecked = false
-                        mMapOfRating[food] = rating
-                    }
+            override fun onClick(rating: String, cell: MyCell) {
+                if (cell == MyCell.FOOD) {
+                    mRadioButton?.isSelected = false
+                    mRadioButton?.isChecked = false
                 }
+                mSubmitScreenViewModel?.refreshMap(cell, rating)
             }
         })
-        mRecyclerView.adapter = mRatingAdapter
+        mRecyclerView?.adapter = mRatingAdapter
     }
 
     private fun initToolbar() {
@@ -140,28 +120,41 @@ class SubmitScreen : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
-        customToolbar.setNavigationOnClickListener {
+        customToolbar?.setNavigationOnClickListener {
             Toast.makeText(context, resources.getString(R.string.close), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setOnRatingBarChangeListener() {
-        mFlightRatingBar.onRatingBarChangeListener =
+        mFlightRatingBar?.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                mMapOfRating[flight] = rating.toInt().toString()
+                mSubmitScreenViewModel?.refreshMap(MyCell.FLIGHT, rating.toString())
             }
     }
 
     private fun setOnRadioButtonClickListener() {
-        mRadioButton.setOnClickListener {
-            if (mRadioButton.isSelected) {
-                mRadioButton.isSelected = false
-                mRadioButton.isChecked = false
+        mRadioButton?.setOnClickListener {
+            if (it.isSelected) {
+                mSubmitScreenViewModel?.refreshMap(MyCell.FOOD, "0")
+                mRadioButton?.isSelected = false
+                mRadioButton?.isChecked = false
             } else {
-                mMapOfRating[food] = null
-                mRadioButton.isSelected = true
-                mRadioButton.isChecked = true
+                mRatingAdapter.clearFoodRating()
+                mSubmitScreenViewModel?.refreshMap(MyCell.FOOD, null)
+                mRadioButton?.isSelected = true
+                mRadioButton?.isChecked = true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mRecyclerView = null
+        mSubmitBtn = null
+        mFlightRatingBar = null
+        mRadioButton = null
+        mEditTextComment = null
+        customToolbar = null
+        mProgressBar = null
     }
 }

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="avatar_coordinate">90dp</dimen>
+    <dimen name="avatar_coordinate">120dp</dimen>
+    <dimen name="toolbar_coordinate">90dp</dimen>
+    <dimen name="title_coordinate">185dp</dimen>
+    <dimen name="subtitle_coordinate">270dp</dimen>
+    <dimen name="flightRatingBar_coordinate">320dp</dimen>
     <dimen name="offsetFactor">60dp</dimen>
     <dimen name="radioBtn_marginStart">16dp</dimen>
     <dimen name="leave_feedback_title_marginTop">10dp</dimen>
+    <dimen name="leave_feedback_title_marginStart">16dp</dimen>
     <dimen name="edit_text_paddingStart">15dp</dimen>
     <dimen name="edit_text_paddingEnd">100dp</dimen>
     <dimen name="submitBtn_margin">20dp</dimen>
@@ -12,10 +17,18 @@
     <dimen name="recycler_item_marginBottom">20dp</dimen>
     <dimen name="recycler_item_paddingTop">20dp</dimen>
     <dimen name="recycler_item_marginTop">20dp</dimen>
-    <dimen name="avatar_marginTop">90dp</dimen>
+    <dimen name="avatar_marginTop">120dp</dimen>
     <dimen name="popupLay_title_padding">20dp</dimen>
     <dimen name="popupLay_title_textSize">30sp</dimen>
-    <dimen name="toolbar_marginTop">20dp</dimen>
+    <dimen name="toolbar_marginTop">50dp</dimen>
     <dimen name="collapsingPopupLay_height">350dp</dimen>
     <dimen name="collapsingPopupLay_minHeight">108dp</dimen>
+    <dimen name="cardViewMargin">-30dp</dimen>
+    <dimen name="cardViewCornerRadius">30dp</dimen>
+
+    <dimen name="popup_layout_y">10dp</dimen>
+    <dimen name="avatar_multiply_factor">125dp</dimen>
+    <dimen name="toolbar_multiply_factor">175dp</dimen>
+    <dimen name="scaleFactorAvatarDimen">10dp</dimen>
+    <dimen name="scaleFactorToolbarDimen">40dp</dimen>
 </resources>

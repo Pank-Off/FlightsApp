@@ -5,50 +5,59 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.aircraft
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.crew
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.flight
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.food
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.people
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.seat
-import ru.appintheair.flightreviewssubmit.SubmitScreen.Companion.text
+import java.util.*
 import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
-    private val mRating: MutableLiveData<HashMap<String, String?>> = MutableLiveData()
-    private val ratingMap: HashMap<String, String?> = LinkedHashMap()
+    private val mRating: MutableLiveData<EnumMap<MyCell, String?>> = MutableLiveData()
     private val mAPIParameters: MutableLiveData<APIParameters> = MutableLiveData()
+    private val mProgressBarState: MutableLiveData<ProgressBarState> = MutableLiveData()
 
     init {
-        mRating.value = ratingMap
+        mRating.value = EnumMap(MyCell::class.java)
+        mProgressBarState.value = ProgressBarState.INVISIBLE
     }
 
-    fun getRating(): LiveData<HashMap<String, String?>> = mRating
+    enum class ProgressBarState {
+        None, VISIBLE, INVISIBLE
+    }
+
+    fun refreshMap(key: MyCell, value: String?) {
+        mRating.value?.put(key, value)
+    }
+
+    fun getProgressBarState(): LiveData<ProgressBarState> = mProgressBarState
+
+    fun getRating(): LiveData<EnumMap<MyCell, String?>> = mRating
 
     fun getData(): LiveData<APIParameters> = mAPIParameters
-
-    fun setRating(listOfRating: HashMap<String, String?>) {
-        val apiParameters = APIParameters(null, 1, 1, 1, 1, 1, 1)
+    fun setRating() {
+        mProgressBarState.postValue(ProgressBarState.VISIBLE)
+        val apiParameters = APIParameters("", 1, 1, 1, 1, 1, 1)
         runBlocking {
             Log.d(javaClass.simpleName, "Imitate long operation")
             delay(3000)
         }
-        listOfRating.forEach { (key, _) ->
+        mRating.value?.forEach { (key, _) ->
             when (key) {
-                aircraft -> apiParameters.aircraft =
-                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                flight -> apiParameters.flight =
-                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                food -> apiParameters.food = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                people -> apiParameters.people =
-                    listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                text -> apiParameters.text = listOfRating[key]
-                crew -> apiParameters.crew = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
-                seat -> apiParameters.seat = listOfRating[key]?.toFloat()?.roundToInt()?.plus(1)
+                MyCell.AIRCRAFT -> apiParameters.aircraft =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1) ?: 1
+                MyCell.FLIGHT -> apiParameters.flight =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1) ?: 1
+                MyCell.FOOD -> apiParameters.food =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1)
+                MyCell.CROWD -> apiParameters.people =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1) ?: 1
+                MyCell.TEXT -> apiParameters.text = mRating.value?.get(key) ?: ""
+                MyCell.CREW -> apiParameters.crew =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1) ?: 1
+                MyCell.SEATS -> apiParameters.seat =
+                    mRating.value?.get(key)?.toFloat()?.roundToInt()?.plus(1) ?: 1
             }
         }
         GlobalScope.launch(Dispatchers.Main) {
             mAPIParameters.value = apiParameters
+            mProgressBarState.postValue(ProgressBarState.INVISIBLE)
         }
     }
 }
