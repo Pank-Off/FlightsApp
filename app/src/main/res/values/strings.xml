@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Flight reviews submit</string>
+    <string name="popup_title">How do you rate the overall flight experience?</string>
+    <string name="popup_content">LH 3495 26 mar 2019\nSFO -> CDG</string>
+
+    <string name="there_were_no_food">There were no food</string>
+    <string name="leave_any_feedback">Leave any feedback</string>
+    <string name="share_your_experience_how_was_the_seat_how_was_the_food_any_tips">Share your experience. How was the seat? How was the food? Any tips?</string>
+    <string name="submit">Submit</string>
+
+    <string name="close">Close</string>
+
+
 </resources>

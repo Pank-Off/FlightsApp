@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/recycler_item_marginStart"
+        android:layout_marginBottom="@dimen/recycler_item_marginBottom"
+        android:paddingTop="@dimen/recycler_item_paddingTop"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/rating_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/popup_content" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/recycler_item_marginStart"
+        android:layout_marginTop="@dimen/recycler_item_marginTop"
+        android:stepSize="1"
+        android:theme="@style/RatingBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rating_text">
+
+    </RatingBar>
+</androidx.constraintlayout.widget.ConstraintLayout>
