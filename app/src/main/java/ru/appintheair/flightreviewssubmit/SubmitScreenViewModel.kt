@@ -10,7 +10,7 @@ import kotlin.math.roundToInt
 
 class SubmitScreenViewModel : ViewModel() {
     private val mRating: MutableLiveData<EnumMap<MyCell, String?>> = MutableLiveData()
-    private val mAPIParameters: MutableLiveData<APIParameters> = MutableLiveData()
+    private val mAPIParameters: MutableLiveData<Event<APIParameters>> = MutableLiveData()
     private val mProgressBarState: MutableLiveData<ProgressBarState> = MutableLiveData()
 
     init {
@@ -30,7 +30,7 @@ class SubmitScreenViewModel : ViewModel() {
 
     fun getRating(): LiveData<EnumMap<MyCell, String?>> = mRating
 
-    fun getData(): LiveData<APIParameters> = mAPIParameters
+    fun getData(): LiveData<Event<APIParameters>> = mAPIParameters
     fun setRating() {
         mProgressBarState.postValue(ProgressBarState.VISIBLE)
         val apiParameters = APIParameters("", 1, 1, 1, 1, 1, 1)
@@ -56,7 +56,7 @@ class SubmitScreenViewModel : ViewModel() {
             }
         }
         GlobalScope.launch(Dispatchers.Main) {
-            mAPIParameters.value = apiParameters
+            mAPIParameters.value = Event(apiParameters)
             mProgressBarState.postValue(ProgressBarState.INVISIBLE)
         }
     }
