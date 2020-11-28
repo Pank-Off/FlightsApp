@@ -61,7 +61,10 @@ class SubmitScreen : Fragment() {
         })
 
         mSubmitScreenViewModel?.getData()?.observe(viewLifecycleOwner, { data ->
-            Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show()
+            val content = data.getContentIfNotHandled()
+            if (content != null) {
+                Toast.makeText(context, content.toString(), Toast.LENGTH_LONG).show()
+            }
         })
 
         mSubmitScreenViewModel?.getProgressBarState()?.observe(viewLifecycleOwner) { progress ->
